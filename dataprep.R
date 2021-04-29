@@ -7,7 +7,7 @@ library(ggplot2)
 
 
 # Loading the data
-dataset <- read.table("data/heart-h.txt", header = TRUE, sep = ",", quote = "")
+dataset <- read.table("data/heart-ch.txt", header = TRUE, sep = ",", quote = "")
 
 nrow(dataset)
 ncol(dataset)
@@ -23,7 +23,7 @@ summary(dataset)
 md.pattern(dataset)
 
 # aggr function ranks the variables by decreasing number of missing values. The variables at the top of the list are those having
-# the most missing values. Here are the top, we have variable 'ca' with almost 100% of missing values
+# the most missing values. Here are the top, we have variable 'ca' with almost 50% of missing values
 mice_plot <- aggr(
     dataset,
     col = c("green", "red"),
@@ -56,3 +56,16 @@ summary(dataset_n)
 # - with 'm=100', we create bins of depth 100 (equal-depth)
 dataset$chol_bin <- as.numeric(cut2(dataset$chol_imputed, g = 3))
 summary(dataset)
+
+
+# Data understanding
+# It is a data analytics step preceding data preprocessing. However, it can also be used at any time during analysis to better
+# understand the data
+
+ggplot(dataset, aes(x = age, y = chol, color = num)) +
+    geom_point(size = 4)
+ggplot(dataset, aes(chest_pain, fill = factor(num))) +
+    geom_bar()
+
+# The following plot shows that heart disease is more prevalent when age increases
+ggplot(dataset, aes(x = age, fill = factor(num))) + geom_bar()
